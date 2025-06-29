@@ -89,8 +89,9 @@
             padding: 15px;
             text-align: left;
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 0;
             flex: 1;
+            padding-left: 20px;
         }
         .servers-container {
             display: flex;
@@ -139,7 +140,7 @@
             font-size: 11px;
         }
         
-        /* Обновленные стили для системы Frags */
+        /* Стили для системы Frags */
         .frag-popup {
             display: none;
             position: fixed;
@@ -219,15 +220,14 @@
         }
         
         .frag-icon-small {
-    width: 120px;
-    height: 120px;
-    filter: drop-shadow(0 0 2px #00F0FF);
-    position: absolute;
-    left: -20px;
-    top: 50%;
-    transform: translateY(-35%) scale(0.8); /* Было -30%, стало -40% - совсем немного выше */
-    z-index: 2;
-}
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 0 2px #00F0FF);
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-35%) scale(0.8);
+            z-index: 2;
         }
         
         .frag-text {
@@ -279,9 +279,10 @@
                     <span class="frag-label">Frags</span>
                 </div>
             </div>
-            <a href="steam-login.php" class="steam-login">
+            <!-- Кнопка Steam (просто ссылка) -->
+            <a href="https://store.steampowered.com/login/" class="steam-login" target="_blank">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png" class="steam-logo" alt="Steam">
-                Войти
+                Войти через Steam
             </a>
         </div>
     </header>
@@ -296,7 +297,7 @@
 
     <!-- 💻 ОСНОВНОЙ КОНТЕНТ -->
     <div class="main">
-        <h1 style="font-size: 16px; margin-bottom: 12px;">CS2 Сервера</h1>
+        <h1 style="font-size: 16px; margin-bottom: 12px; text-align: left;">CS2 Сервера</h1>
         
         <div class="servers-container">
             <!-- Сервер 1 -->
@@ -363,7 +364,6 @@
         function getBrowserFingerprint() {
             const fingerprint = [];
             
-            // Добавляем различные характеристики браузера
             fingerprint.push(navigator.userAgent);
             fingerprint.push(navigator.platform);
             fingerprint.push(navigator.hardwareConcurrency);
@@ -374,7 +374,6 @@
             fingerprint.push(!!window.localStorage);
             fingerprint.push(!!window.indexedDB);
             
-            // Canvas fingerprinting
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             ctx.textBaseline = 'top';
@@ -383,7 +382,6 @@
             ctx.fillText('XenoFragFingerprint', 2, 2);
             fingerprint.push(canvas.toDataURL());
             
-            // Хешируем полученные данные
             return btoa(fingerprint.join('|')).substring(0, 32);
         }
 
