@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XenoFrag — Киберспортивная арена</title>
+    <style>
+        /* 🔥 УЛЬТРАКОМПАКТНЫЕ СТИЛИ */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #0A0A12;
+            color: white;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(90deg, #00F0FF, #FF00F5);
+            padding: 6px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        .logo-img {
+            height: 48px;
+            margin-right: 12px;
+        }
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            text-shadow: 0 0 6px #00F0FF;
+            margin: 0;
+        }
+        .tagline {
+            font-size: 10px;
+            margin-left: 10px;
+            opacity: 0.9;
+        }
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+        .steam-login {
+            background: linear-gradient(90deg, #00B4FF, #006AFF);
+            color: white;
+            padding: 6px 12px 6px 8px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 0 10px rgba(0, 180, 255, 0.7);
+            transition: all 0.2s ease;
+        }
+        .steam-login:hover {
+            background: linear-gradient(90deg, #00C8FF, #0080FF);
+        }
+        .steam-logo {
+            width: 18px;
+            height: 18px;
+            margin-right: 6px;
+        }
+        nav {
+            display: flex;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px 12px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .main {
+            padding: 15px;
+            text-align: left;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+        }
+        .servers-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: flex-start;
+        }
+        .server-card {
+            background: #1A1A2E;
+            border-radius: 6px;
+            padding: 12px;
+            width: 220px;
+            border: 1px solid #00F0FF;
+            transition: transform 0.2s;
+        }
+        .server-card:hover {
+            transform: translateY(-2px);
+        }
+        .server-card h2 {
+            font-size: 14px;
+            margin: 0 0 6px 0;
+            color: #00F0FF;
+        }
+        .server-card p {
+            font-size: 11px;
+            margin: 3px 0;
+            line-height: 1.3;
+        }
+        .btn {
+            background: linear-gradient(90deg, #00F0FF, #FF00F5);
+            color: black;
+            padding: 4px 10px;
+            border: none;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 6px;
+            display: inline-block;
+        }
+        footer {
+            background: #000;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+            font-size: 11px;
+        }
+        
+        /* Обновленные стили для системы Frags */
+        .frag-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        .frag-popup-content {
+            background: #1A1A2E;
+            border: 2px solid #00F0FF;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 20px #00F0FF;
+            animation: slideUp 0.4s;
+        }
+        
+        .frag-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 5px #00F0FF);
+        }
+        
+        .btn-frag {
+            background: linear-gradient(90deg, #00F0FF, #FF00F5);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        
+        .btn-frag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.8);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #00F0FF;
+            transition: color 0.2s;
+        }
+        
+        .close-btn:hover {
+            color: #FF00F5;
+        }
+        
+        .frag-widget {
+            background: rgba(0, 240, 255, 0.1);
+            padding: 6px 15px 6px 60px;
+            border-radius: 15px;
+            font-weight: bold;
+            border: 1px solid #00F0FF;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            height: 40px;
+        }
+        
+        .frag-icon-small {
+    width: 120px;
+    height: 120px;
+    filter: drop-shadow(0 0 2px #00F0FF);
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-35%) scale(0.8); /* Было -30%, стало -40% - совсем немного выше */
+    z-index: 2;
+}
+        }
+        
+        .frag-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .frag-count {
+            color: #00F0FF;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .frag-label {
+            font-size: 14px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 🎮 ШАПКА САЙТА -->
+    <header>
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/tgzPTj7y/LOGO.png" class="logo-img" alt="XenoFrag Logo">
+            <div class="logo">XenoFrag</div>
+            <div class="tagline">Киберспортивная арена</div>
+        </div>
+        <div class="auth-buttons">
+            <div class="frag-widget">
+                <img src="https://i.postimg.cc/RVpV2BF2/result-3-1-no-bg-preview-carve-photos.png" class="frag-icon-small" alt="Frags">
+                <div class="frag-text">
+                    <span id="user-frags" class="frag-count">0</span>
+                    <span class="frag-label">Frags</span>
+                </div>
+            </div>
+            <a href="steam-login.php" class="steam-login">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/512px-Steam_icon_logo.svg.png" class="steam-logo" alt="Steam">
+                Войти
+            </a>
+        </div>
+    </header>
+
+    <!-- 🕹️ МЕНЮ -->
+    <nav>
+        <a href="#">Сервера</a>
+        <a href="#">Турниры</a>
+        <a href="#">Статистика</a>
+        <a href="#">Команда</a>
+    </nav>
+
+    <!-- 💻 ОСНОВНОЙ КОНТЕНТ -->
+    <div class="main">
+        <h1 style="font-size: 16px; margin-bottom: 12px;">CS2 Сервера</h1>
+        
+        <div class="servers-container">
+            <!-- Сервер 1 -->
+            <div class="server-card">
+                <h2>🔥5 НА 5</h2>
+                <p>IP: cs.XenoFrag.gg:27015</p>
+                <p>Онлайн: 24/32</p>
+                <p>Карта: aim_map</p>
+                <p>Пинг: 34ms</p>
+                <button class="btn" onclick="window.location.href='steam://connect/cs.XenoFrag.gg:27015'">ПОДКЛЮЧИТЬСЯ</button>
+            </div>
+
+            <!-- Сервер 2 -->
+            <div class="server-card">
+                <h2>💥 AWP LEGO</h2>
+                <p>IP: cs.XenoFrag.gg:27016</p>
+                <p>Онлайн: 12/16</p>
+                <p>Карта: de_dust2</p>
+                <p>Пинг: 28ms</p>
+                <button class="btn" onclick="window.location.href='steam://connect/cs.XenoFrag.gg:27016'">ПОДКЛЮЧИТЬСЯ</button>
+            </div>
+
+            <!-- Сервер 3 -->
+            <div class="server-card">
+                <h2>⚡ SURF</h2>
+                <p>IP: cs.XenoFrag.gg:27017</p>
+                <p>Онлайн: 8/24</p>
+                <p>Карта: surf_beginner</p>
+                <p>Пинг: 42ms</p>
+                <button class="btn" onclick="window.location.href='steam://connect/cs.XenoFrag.gg:27017'">ПОДКЛЮЧИТЬСЯ</button>
+            </div>
+
+            <!-- Сервер 4 -->
+            <div class="server-card">
+                <h2>🔫 BHOP</h2>
+                <p>IP: cs.XenoFrag.gg:27018</p>
+                <p>Онлайн: 16/24</p>
+                <p>Карта: de_inferno</p>
+                <p>Пинг: 31ms</p>
+                <button class="btn" onclick="window.location.href='steam://connect/cs.XenoFrag.gg:27018'">ПОДКЛЮЧИТЬСЯ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Всплывающее окно Frags -->
+    <div id="frag-popup" class="frag-popup">
+        <div class="frag-popup-content">
+            <span class="close-btn">&times;</span>
+            <img src="https://i.postimg.cc/RVpV2BF2/result-3-1-no-bg-preview-carve-photos.png" alt="Frags Icon" class="frag-icon">
+            <h3>Ежедневная награда</h3>
+            <p>Получи <span class="frag-amount">30</span> Frags за вход!</p>
+            <button id="claim-frags" class="btn-frag">Забрать</button>
+        </div>
+    </div>
+
+    <!-- 🏆 ФУТЕР -->
+    <footer>
+        <p>© 2024 XenoFrag | Все права защищены</p>
+        <p>Дискорд: discord.gg/XenoFrag</p>
+    </footer>
+
+    <script>
+        // Генерация уникального ID браузера (фингерпринт)
+        function getBrowserFingerprint() {
+            const fingerprint = [];
+            
+            // Добавляем различные характеристики браузера
+            fingerprint.push(navigator.userAgent);
+            fingerprint.push(navigator.platform);
+            fingerprint.push(navigator.hardwareConcurrency);
+            fingerprint.push(screen.width + 'x' + screen.height);
+            fingerprint.push(new Date().getTimezoneOffset());
+            fingerprint.push(navigator.language);
+            fingerprint.push(!!window.sessionStorage);
+            fingerprint.push(!!window.localStorage);
+            fingerprint.push(!!window.indexedDB);
+            
+            // Canvas fingerprinting
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#f00';
+            ctx.fillText('XenoFragFingerprint', 2, 2);
+            fingerprint.push(canvas.toDataURL());
+            
+            // Хешируем полученные данные
+            return btoa(fingerprint.join('|')).substring(0, 32);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const fingerprint = getBrowserFingerprint();
+            const today = new Date().toDateString();
+            const popup = document.getElementById('frag-popup');
+            const claimBtn = document.getElementById('claim-frags');
+            const fragCount = document.getElementById('user-frags');
+
+            // Проверка: получал ли пользователь Frags сегодня
+            const lastClaimDate = localStorage.getItem(`lastClaimDate_${fingerprint}`);
+            const savedFrags = localStorage.getItem(`userFrags_${fingerprint}`) || 0;
+            
+            // Обновляем виджет с балансом
+            fragCount.textContent = savedFrags;
+
+            // Показываем окно, если награда не получена сегодня
+            if (lastClaimDate !== today) {
+                setTimeout(() => {
+                    popup.style.display = 'flex';
+                }, 2000);
+            }
+
+            // Закрытие окна
+            document.querySelector('.close-btn').addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+
+            // Выдача Frags
+            claimBtn.addEventListener('click', () => {
+                const newFrags = parseInt(savedFrags) + 30;
+                localStorage.setItem(`userFrags_${fingerprint}`, newFrags);
+                localStorage.setItem(`lastClaimDate_${fingerprint}`, today);
+                
+                // Обновляем виджет
+                fragCount.textContent = newFrags;
+                
+                // Анимация подтверждения
+                claimBtn.textContent = 'Получено!';
+                claimBtn.style.background = 'linear-gradient(90deg, #00FF7F, #00F0FF)';
+                
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                    claimBtn.textContent = 'Забрать';
+                    claimBtn.style.background = 'linear-gradient(90deg, #00F0FF, #FF00F5)';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
